@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['pid'] = $pid;
                 $_SESSION['rid'] = $rid;
 
-                header("Location: ./../view/welcome-page-users.html");
+                header("Location: ./../view/welcome-page-users.php");
                 exit();
             } else {
                 echo "Incorrect username or password.";
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: Unable to prepare statement. Please try again.";
     }
 } else {
-    header("Location: ./../login/login_view.php");
+    header("Location: login_view.php");
     exit();
 }
 

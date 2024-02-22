@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-unset($_SESSION['userId']);
-unset($_SESSION['roleId']);
+unset($_SESSION['pid']);
+unset($_SESSION['rid']);
 
-header("Location: login/login_view.php");
+header("Location: login_view.php");
 
 exit();
 ?>
