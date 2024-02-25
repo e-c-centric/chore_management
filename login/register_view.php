@@ -91,7 +91,7 @@
                     </div>
                     <div class="input">
                         <div class="title-2 title-4 roboto-medium-black-14px">Retype Password</div>
-                        <div class="textfield"><input type="password" class="text text-2 roboto-normal-black-14px" placeholder="Retype your password" name="retypePassword" id="retypePassword" required oninput="checkPasswordMatch()"></div>
+                        <div class="textfield"><input type="password" class="text text-2 roboto-normal-black-14px" placeholder="Retype your password" name="retypedPassword" id="retypedPassword" required oninput="checkPasswordMatch()"></div>
                     </div>
                     <div class="">
                         <div class="">
@@ -102,18 +102,42 @@
             </div>
         </form>
     </div>
-</body>
-<script>
-    function checkPasswordMatch() {
-        var password = document.getElementById("password").value;
-        var retypePassword = document.getElementById("retypePassword").value;
 
-        if (password != retypePassword) {
-            document.getElementById("retypePassword").setCustomValidity("Passwords do not match");
-        } else {
-            document.getElementById("retypePassword").setCustomValidity('');
+    <script>
+        function checkPasswordMatch() {
+            var password = document.getElementById("password").value;
+            var retypePassword = document.getElementById("retypePassword").value;
+
+            if (password != retypePassword) {
+                document.getElementById("retypePassword").setCustomValidity("Passwords do not match");
+            } else {
+                document.getElementById("retypePassword").setCustomValidity('');
+            }
         }
-    }
-</script>
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+
+            fetch('./../action/register_user_action.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = './../view/welcome-page-users.php';
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+
+</body>
 
 </html>

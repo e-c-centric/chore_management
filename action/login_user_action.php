@@ -2,7 +2,9 @@
 session_start();
 include '../settings/connection.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$response = array('error' => false, 'message' => '');
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
@@ -25,23 +27,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['pid'] = $pid;
                 $_SESSION['rid'] = $rid;
 
-                header("Location: ./../view/welcome-page-users.php");
-                exit();
+                // header("Location: ./../view/welcome-page-users.php");
+                // exit();
             } else {
-                echo "Incorrect username or password.";
+                $response['error'] = true;
+                $response['message'] = "Incorrect username or password.";
             }
         } else {
-            echo "User not registered or incorrect username.";
+            $response['error'] = true;
+            $response['message'] = "User not registered or incorrect username.";
         }
 
         $stmt->close();
     } else {
-        echo "Error: Unable to prepare statement. Please try again.";
+        $response['error'] = true;
+        $response['message'] = "Error: Unable to prepare statement. Please try again.";
     }
 } else {
-    header("Location: login_view.php");
-    exit();
+    $response['error'] = true;
+    $response['message'] = "Wrong request method. Please try again.";
 }
 
 $conn->close();
-?>
+
+echo json_encode($response);

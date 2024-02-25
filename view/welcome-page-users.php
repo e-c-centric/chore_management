@@ -1,10 +1,9 @@
 <?php
-session_start();
+include '../settings/connection.php';
+include '../settings/core.php';
 
-if (!isset($_SESSION['pid']) || !isset($_SESSION['rid'])) {
-    header("Location: ../login/login_view.php");
-    exit();
-}
+checkLogin();
+
 ?>
 <!DOCTYPE html>
 <html lang="en-gb">

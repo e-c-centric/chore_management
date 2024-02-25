@@ -14,6 +14,8 @@ include '../functions/chore_fxn.php';
     <link rel="stylesheet" type="text/css" href="../css/styleguide.css" />
     <link rel="stylesheet" type="text/css" href="../css/globals.css" />
     <link rel="stylesheet" type="text/css" href="../css/chore-control-panel.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <title>Chore Control Panel</title>
 </head>
 
@@ -26,7 +28,6 @@ include '../functions/chore_fxn.php';
                 <button class="button-1 button-2 primary-1 primary-2" id="toggleCreateChoreForm">
                     <div class="title title-4 roboto-medium-white-16px">Create New Chore</div>
                 </button>
-                <!--Note to self: Take out condition inversion after testing-->
 
                 <?php if (isLoggedIn()) : ?>
                     <div class="section-1 section-2">
@@ -43,8 +44,8 @@ include '../functions/chore_fxn.php';
                                     <?php
                                     foreach ($var_data as $chore) {
                                         echo "<tr>";
-                                        echo "<td>{$chore['chorename']}</td>";
-                                        echo "<td><a href=\"../admin/edit_chore_view.php?id={$chore['cid']}\">📝</a><a href=\"../action/delete_chore_action.php?id={$chore['cid']}\">🚮</a></td>";
+                                        echo "<td>{$chore['chorname']}</td>";
+                                        echo "<td><a href=\"../admin/edit_chore_view.php?id={$chore['cid']}\">📝</a><a href=\"#\" class=\"delete-chore\" data-id=\"{$chore['cid']}\">🚮</a></td>";
                                         echo "</tr>";
                                     }
                                     ?>
@@ -72,7 +73,10 @@ include '../functions/chore_fxn.php';
         </div>
 
     <?php else : ?>
-        <p>Please log in to access this page.</p>
+        <script>
+            alert('Please log in to access this page.');
+            window.location.href = '../index.php';
+        </script>
     <?php endif; ?>
 </body>
 <script>
@@ -85,6 +89,56 @@ include '../functions/chore_fxn.php';
                 block: 'start'
             });
         }
+    });
+
+    document.getElementById('createChoreForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+
+        fetch('./../action/add_chore_action.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    window.location.href = window.location.href;
+                }
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.delete-chore');
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                var id = this.getAttribute('data-id');
+                var row = this.closest('tr');
+
+                fetch('../action/delete_chore_action.php?id=' + encodeURIComponent(id), {
+                        method: 'GET',
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        alert(data.message);
+                        if (data.success) {
+                            row.remove();
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                    });
+            });
+        });
     });
 </script>
 

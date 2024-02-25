@@ -46,7 +46,7 @@
                         <input type="password" id="password" name="password" class="textfield" placeholder="Enter your password" minlength="8" required>
                         <div class="info">Password must be at least 8 characters</div>
                     </div>
-                    <button type="submit" class="button-1 button-2 primary-1 primary-2">
+                    <button type="submit" class="button-1 button-2 primary-1 primary-2" id="login" , name="submit">
                         <div class="title title-4 roboto-medium-white-16px">Sign in</div>
                     </button>
                 </div>
@@ -56,6 +56,32 @@
         <img class="vector-200" src="../img/vector-200-4.png" alt="Vector 200" />
     </div>
     </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '../action/login_user_action.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.addEventListener('load', function() {
+                var response = JSON.parse(this.responseText);
+                if (this.status == 200) {
+                    if (response.error) {
+                        var errorMessageElement = document.getElementById('errorMessage');
+                        alert(response.message);
+                    } else {
+                        window.location.href = './../view/welcome-page-users.php';
+                    }
+                }
+            });
+
+            xhr.send('submit=true&email=' + encodeURIComponent(email) + '&password=' + encodeURIComponent(password));
+        });
+    </script>
 </body>
 
 </html>

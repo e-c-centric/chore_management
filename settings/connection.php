@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "chore_management";
+$dbname = "chores_mgt";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

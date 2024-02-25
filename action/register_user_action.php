@@ -1,5 +1,6 @@
 <?php
 include '../settings/connection.php';
+$response = array("success" => false, "message" => "");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstName = $_POST['firstName'];
@@ -10,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phoneNumber = $_POST['phoneNumber'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $retypedPassword = $_POST['retypedPassword'];
+    // $retypedPassword = $_POST['retypedPassword'];
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -28,7 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fid = $row['fid'];
         
         $resultRole->close();
-        $stmtRole->close();}
+        $stmtRole->close();
+    }
 
     $sql = "INSERT INTO People (rid, fid, fname, lname, gender, dob, tel, email, passwd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -39,18 +41,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            header("Location: ./../login/login_view.php");
-            exit();
+            $response["success"] = true;
+            $response["message"] = "User registered successfully.";
         } else {
-            echo "Error: Unable to register user. Please try again.";
+            $response["success"] = false;
+            $response["message"] = "Error: Unable to register user. Please try again.";
         }
 
         $stmt->close();
     } else {
-        echo "Error: Unable to prepare statement. Please try again.";
+        $response["success"] = false;
+        $response["message"] = "Error: Unable to prepare statement. Please try again.";
     }
 } else {
-    header("Location: ../view/register.html");
-    exit();
+    $response["success"] = false;
+    $response["message"] = "Invalid request method.";
+
 }
+$conn->close();
+
+echo json_encode($response);
 ?>

@@ -1,6 +1,8 @@
 <?php
 include '../settings/connection.php';
 
+$response = array('success' => false, 'message' => '');
+
 if (isset($_GET['id'])) {
     $choreId = $_GET['id'];
 
@@ -13,18 +15,23 @@ if (isset($_GET['id'])) {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            header("Location: ../admin/chore_control_view.php");
-            exit();
+            $response['success'] = true;
+            $response['message'] = "Chore deleted successfully.";
         } else {
-            echo "Error: Unable to delete chore. Please try again.";
+            $response['success'] = false;
+            $response['message'] = "Error: Unable to delete chore. Please try again.";
         }
 
         $stmt->close();
     } else {
-        echo "Error: Unable to prepare statement. Please try again.";
+        $response['success'] = false;
+        $response['message'] = "Error: Unable to prepare statement. Please try again.";
     }
 } else {
-    header("Location: ../admin/chore_control_view.php");
-    exit();
+    $response['success'] = false;
+    $response['message'] = "Error: Wrong request method. Please try again.";
 }
+
+$conn->close();
+echo json_encode($response);
 ?>
