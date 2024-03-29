@@ -3,11 +3,11 @@ include '../settings/connection.php';
 
 $response = array('success' => false, 'message' => '');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $choreId = $_POST['choreId'];
-    $newChoreName = $_POST['choreName'];
+if (isset($_GET['choreId'], $_GET['choreName'])) {
+    $choreId = $_GET['choreId'];
+    $newChoreName = $_GET['choreName'];
 
-    $sql = "UPDATE Chores SET chorname = ? WHERE cid = ?";
+    $sql = "UPDATE Chores SET chorename = ? WHERE cid = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("si", $newChoreName, $choreId);
     $stmt->execute();

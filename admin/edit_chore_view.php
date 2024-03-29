@@ -2,8 +2,10 @@
 include '../settings/core.php';
 include '../action/get_a_chore_action.php';
 
-if (!isLoggedIn()) {
-    header("Location: ./../login/login_view.php");
+checkLogin();
+
+if (checkUserRole()==3){
+    header("Location: ./../view/home_view.php");
     exit();
 }
 

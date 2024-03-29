@@ -74,7 +74,7 @@
                         var errorMessageElement = document.getElementById('errorMessage');
                         alert(response.message);
                     } else {
-                        window.location.href = './../view/welcome-page-users.php';
+                        window.location.href = './../view/home_view.php';
                     }
                 }
             });

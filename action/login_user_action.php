@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT pid, passwd, rid FROM People WHERE email = ?";
+    $sql = "SELECT pid, passwd, fname, lname, rid FROM People WHERE email = ?";
     $stmt = $conn->prepare($sql);
 
     if ($stmt) {
@@ -19,11 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            $stmt->bind_result($pid, $hashedPassword, $rid);
+            $stmt->bind_result($pid, $hashedPassword, $fname, $lname, $rid);
 
             $stmt->fetch();
 
             if (password_verify($password, $hashedPassword)) {
+                $_SESSION['fullname'] = $fname . " " . $lname;
                 $_SESSION['pid'] = $pid;
                 $_SESSION['rid'] = $rid;
 

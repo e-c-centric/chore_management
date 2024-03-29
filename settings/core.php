@@ -14,7 +14,7 @@ function checkUserRole()
     if (!isset($_SESSION['rid'])) {
         return false;
     }
-    return $_SESSION['role_id'];
+    return $_SESSION['rid'];
 }
 
 function isLoggedIn()

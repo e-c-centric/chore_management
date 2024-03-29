@@ -1,12 +1,12 @@
 <?php
 include '../settings/connection.php';
 
-$response = array('success' => false, 'message' => '', 'chorname' => '');
+$response = array('success' => false, 'message' => '', 'chorename' => '');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST['choreName'])) {
     $choreName = $_POST['choreName'];
 
-    $sql = "INSERT INTO Chores (chorname) VALUES (?)";
+    $sql = "INSERT INTO Chores (chorename) VALUES (?)";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $choreName);

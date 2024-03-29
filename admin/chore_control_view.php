@@ -1,6 +1,13 @@
 <?php
 include '../settings/core.php';
 include '../functions/chore_fxn.php';
+
+checkLogin();
+
+if (checkUserRole() == 3) {
+    header("Location: ./../view/home_view.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,106 +19,154 @@ include '../functions/chore_fxn.php';
     <meta name="twitter:card" content="photo" />
     <link rel="stylesheet" type="text/css" href="../css/login.css" />
     <link rel="stylesheet" type="text/css" href="../css/styleguide.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+
     <link rel="stylesheet" type="text/css" href="../css/globals.css" />
     <link rel="stylesheet" type="text/css" href="../css/chore-control-panel.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <title>Chore Control Panel</title>
 </head>
 
 <body>
-    <input type="hidden" id="anPageName" name="page" value="chorecontrolpanel" />
-    <div class="login screen">
-        <div class="section section-2">
-            <div class="container container-2">
-                <h1 class="title-2 valign-text-middle title-4 roboto-bold-black-40px">The Siuu Chore Management System</h1>
-                <button class="button-1 button-2 primary-1 primary-2" id="toggleCreateChoreForm">
-                    <div class="title title-4 roboto-medium-white-16px">Create New Chore</div>
-                </button>
+    <aside class="sidebar flex flex-column">
+        <h3>Siuuuu Chore MS</h3>
 
-                <?php if (isLoggedIn()) : ?>
-                    <div class="section-1 section-2">
-                        <div class="container-1 container-2">
-                            <div class="title-3 title-4 roboto-bold-black-40px">Chore List </div>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Chore Name</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    foreach ($var_data as $chore) {
-                                        echo "<tr>";
-                                        echo "<td>{$chore['chorname']}</td>";
-                                        echo "<td><a href=\"../admin/edit_chore_view.php?id={$chore['cid']}\">📝</a><a href=\"#\" class=\"delete-chore\" data-id=\"{$chore['cid']}\">🚮</a></td>";
-                                        echo "</tr>";
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
+        <div class="flex flex-column justify-between h-full">
+            <div class="menu-links flex flex-column">
+                <div class="flex items-center gap-4">
+                    <img width="50" height="50" src="https://img.icons8.com/quill/50/bungalow.png" alt="bungalow" />
+                    <a href="../view/home_view.php">Home</a>
+                </div>
+                <div class="flex items-center gap-4 active">
+                    <img width="50" height="50" src="https://img.icons8.com/dotty/80/admin-settings-male.png" alt="admin-settings-male" />
+                    <a href="../admin/chore_control_view.php">Chore Managament</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <img width="48" height="48" src="https://img.icons8.com/badges/48/course-assign.png" alt="course-assign" /> <a href="../admin/assign_chore_view.php">Chore Assignments</a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <img width="48" height="48" src="https://img.icons8.com/dotty/48/user.png" alt="user" /> <?php echo $_SESSION['fullname']; ?>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <img width="50" height="50" src="https://img.icons8.com/ios/50/exit--v1.png" alt="exit--v1" /> <a href="../login/logout_view.php">Logout</a>
+                </div>
+            </div>
+
+    </aside>
+
+    <div class="content">
+
+        <div class="inner flex flex-column gap-8">
+            <div class="flex flex-column gap-4">
+                <div class="flex items-center justify-between">
+                    <h1>Chore List</h1>
+                    <button class="add-chore" onclick="document.getElementById('addChoreModal').classList.remove('hidden');" id="modal-btn">Add a chore</button>
+                </div>
+                <div class=" flex items-center justify-between gap-6">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Chore Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($var_data as $chore) {
+                                echo "<tr>";
+                                echo "<td>{$chore['chorename']}</td>";
+                                echo "<td><a class =\"edit-chore\" href=\"../admin/edit_chore_view.php?id={$chore['cid']}\">📝</a><a href=\"#\" class=\"delete-chore\" data-id=\"{$chore['cid']}\">🚮</a></td>";
+                                echo "</tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="addChoreModal" class="modal hidden">
+                <div class="overlay"></div>
+                <div class="modal-body flex flex-column gap-4">
+                    <div class="header flex flex-column gap-4">
+                        <div class="flex items-center justify-between">
+                            <h3>Add a chore</h3>
+                            <button class="close" onclick="document.getElementById('addChoreModal').classList.add('hidden');" id="modal-close-btn">
+                                X
+                            </button>
                         </div>
+                        <hr>
                     </div>
-                    <form action="./../action/add_chore_action.php" method="POST" id="createChoreForm" name="createChoreForm" style="display: none;">
-                        <div class="section-1 section-2">
-                            <div class="container-1 container-2">
-                                <div class="title-3 title-4 roboto-bold-black-40px">Create Chore</div>
-                                <div class="input">
-                                    <label for="choreName" class="title-1 title-4 roboto-medium-black-14px">Chore Name</label>
-                                    <input type="text" id="choreName" name="choreName" class="textfield" placeholder="Enter the name of the chore" required>
-                                </div>
-                                <button type="submit" class="button-1 button-2 primary-1 primary-2">
-                                    <div class="title title-4 roboto-medium-white-16px">Create Chore</div>
-                                </button>
-                            </div>
+                    <div class="flex flex-column gap-4 w-full">
+                        <div class="w-full">
+                            <input type="text" class="w-full" id="chorename" placeholder="Chore name">
                         </div>
-                    </form>
-
-                    <img class="vector-200" src="../img/vector-200-4.png" alt="Vector 200" />
+                        <button id="submit" onClick="addChoreAction()">Add Chore</button>
+                    </div>
+                </div>
             </div>
         </div>
+        <div id="editMdal" class="modal hidden">
+            <div class="overlay"></div>
+            <div class="modal-body flex flex-column gap-4">
+                <div class="header flex flex-column gap-4">
+                    <div class="flex items-center justify-between">
+                        <h3>Update chore</h3>
+                        <button class="close" onclick="document.getElementById('editMdal').classList.add('hidden');" id="modal-close-btn">
+                            X
+                        </button>
+                    </div>
+                    <hr>
+                </div>
+                <div class="flex flex-column gap-4 w-full">
+                    <div class="w-full">
+                        <input type="text" id="newChoreName" class="w-full" placeholder="Chore name">
+                    </div>
+                    <button id="editChore" onClick=editChoreAction()>Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <?php else : ?>
-        <script>
-            alert('Please log in to access this page.');
-            window.location.href = '../index.php';
-        </script>
-    <?php endif; ?>
 </body>
 <script>
-    document.getElementById('toggleCreateChoreForm').addEventListener('click', function() {
-        var form = document.getElementById('createChoreForm');
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
-        if (form.style.display === 'block') {
-            form.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
+    var choreId = null;
 
-    document.getElementById('createChoreForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    function addChoreAction() {
+        var choreName = document.getElementById('chorename').value;
 
-        var formData = new FormData(this);
-
-        fetch('./../action/add_chore_action.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
+        $.ajax({
+            url: './../action/add_chore_action.php',
+            type: 'POST',
+            data: {
+                choreName: choreName
+            },
+            success: function(data) {
+                data = JSON.parse(data);
                 if (data.success) {
-                    window.location.href = window.location.href;
+                    document.getElementById('addChoreModal').classList.add('hidden');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Chore added successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    window.location.reload(true);
                 }
-
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    });
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error adding chore!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+    };
 
     document.addEventListener('DOMContentLoaded', function() {
         var deleteButtons = document.querySelectorAll('.delete-chore');
@@ -129,9 +184,21 @@ include '../functions/chore_fxn.php';
                         return response.json();
                     })
                     .then(function(data) {
-                        alert(data.message);
                         if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
                             row.remove();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
                         }
                     })
                     .catch(function(error) {
@@ -140,6 +207,52 @@ include '../functions/chore_fxn.php';
             });
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var editButtons = document.querySelectorAll('.edit-chore');
+        editButtons.forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                choreId = url.split('=')[1];
+                document.getElementById('editMdal').classList.remove('hidden');
+            });
+        });
+    });
+
+    function editChoreAction() {
+        var choreName = document.getElementById('newChoreName').value;
+        console.log(choreName, choreId);
+        $.ajax({
+            url: './../action/edit_a_chore_action.php',
+            type: 'GET',
+            data: {
+                choreName: choreName,
+                choreId: choreId
+            },
+            success: function(data) {
+                data = JSON.parse(data);
+                if (data.success) {
+                    document.getElementById('editMdal').classList.add('hidden');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Chore updated successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    window.location.reload(true);
+                }
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error updating chore!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+    };
 </script>
 
 </html>

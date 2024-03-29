@@ -127,7 +127,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        window.location.href = './../view/welcome-page-users.php';
+                        window.location.href = './../view/home_view.php';
                     } else {
                         alert(data.message);
                     }
