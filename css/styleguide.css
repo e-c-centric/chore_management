@@ -113,7 +113,7 @@
 }
 
 .roboto-bold-melon-40px {
-  color: var(--melon);
+  color: black;
   font-family: var(--font-family-roboto);
   font-size: var(--font-size-xxxl);
   font-style: normal;

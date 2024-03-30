@@ -41,7 +41,7 @@
 .register .seconday {
   align-items: center;
   border: 1px solid;
-  border-color: var(--melon);
+  border-color: black;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -53,7 +53,7 @@
 }
 
 .register .title-3 {
-  color: var(--melon);
+  color: black;
   font-family: var(--font-family-roboto);
   font-size: var(--font-size-l);
   font-weight: 500;
@@ -170,7 +170,7 @@
 
 .register .primary-2 {
   align-items: center;
-  background-color: var(--melon);
+  background-color: black;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
