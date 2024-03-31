@@ -31,7 +31,7 @@ checkLogin();
                 </div>
                 <div class="flex items-center gap-4">
                     <img width="50" height="50" src="https://img.icons8.com/dotty/80/admin-settings-male.png" alt="admin-settings-male" />
-                    <a href="../admin/chore_control_view.php">Chore Managament</a>
+                    <a href="../admin/chore_control_view.php">Chore Management</a>
                 </div>
                 <div class="flex items-center gap-4">
                     <img width="48" height="48" src="https://img.icons8.com/badges/48/course-assign.png" alt="course-assign" /> <a href="../admin/assign_chore_view.php">Chore Assignments</a>
