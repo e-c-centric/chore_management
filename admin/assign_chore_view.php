@@ -42,7 +42,7 @@ if (checkUserRole() == 3) {
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <img width="48" height="48" src="https://img.icons8.com/dotty/48/user.png" alt="user" /> <?php echo $_SESSION['fullname']; ?>
+                    <img width="48" height="48" src="https://img.icons8.com/dotty/48/user.png" alt="user" /> <a href="../view/assigned_chores_view_user.php"><?php echo $_SESSION['fullname'];echo"\n"; ?>View Your Chores</a>
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -55,9 +55,14 @@ if (checkUserRole() == 3) {
         <div class="content">
             <div class="inner flex flex-column gap-8">
                 <div class="flex flex-column gap-4">
+                <div class="flex items-center justify-between">
+                    <h3></h3>
+                <p><?php echo $_SESSION['fullname']; ?></p>
+                </div>
                     <div class="flex items-center justify-between">
                         <h3>Chore Assignments</h3>
                         <button class="add-chore" onclick="document.getElementById('assignModal').classList.remove('hidden')" id="modal-btn">Assign a chore</button>
+
                     </div>
                     <div class=" flex items-center justify-between gap-6">
                         <table>

@@ -38,7 +38,7 @@ $role = checkUserRole();
         } ?>
 
         <div class="flex items-center gap-4">
-          <img width="48" height="48" src="https://img.icons8.com/dotty/48/user.png" alt="user" /> <?php echo $_SESSION['fullname']; ?>
+        <img width="48" height="48" src="https://img.icons8.com/dotty/48/user.png" alt="user" /> <a href="../view/assigned_chores_view_user.php"><?php echo $_SESSION['fullname'];echo"\n"; ?>View Your Chores</a>
         </div>
 
         <div class="flex items-center gap-4">
@@ -52,7 +52,7 @@ $role = checkUserRole();
     <div class="content">
       <header class="flex items-center justify-between">
         <h2>Dashboard</h2>
-        <!-- <p>Welcome, <#?php echo $_SESSION['fname']; ?></p> -->
+        <p>Welcome, <?php echo $_SESSION['fullname']; ?></p>
       </header>
 
 
@@ -65,7 +65,7 @@ $role = checkUserRole();
                 <div class="icon">
                   <img width="48" height="48" src="https://img.icons8.com/color/48/filled-plus-2-math.png" alt="" />
                 </div>
-                <p>All Chores</p>
+                <p>All Chores Assigned</p>
               </div>
               <h1 class="progress">
                 <?php
@@ -119,7 +119,7 @@ $role = checkUserRole();
         <div class="flex flex-column gap-2 recently-assigned">
           <div class="flex items-center justify-between">
             <h5>Recently Assigned Chores</h5>
-            <a href="" class="text-sm">View assigned chores</a>
+            <a href="assigned_chores_view_user.php" class="text-sm">View assigned chores</a>
           </div>
           <?php
           echo showRecent();

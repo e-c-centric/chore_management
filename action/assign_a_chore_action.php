@@ -1,13 +1,15 @@
 <?php
+include_once '../settings/core.php';
 
 if (isset($_POST['cid']) && isset($_POST['pid']) && isset($_POST['date'])) {
     include_once '../settings/connection.php';
     $pid = $_POST['pid'];
     $cid = $_POST['cid'];
     $date = $_POST['date'];
+    $who_assigned = $_SESSION['pid'];
     $query = "INSERT INTO assignment (cid, sid, date_assign, date_due, who_assigned) VALUES (?, 1, CURDATE(), ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("isi", $cid, $date, $pid);
+    $stmt->bind_param("isi", $cid, $date, $who_assigned);
 
     if ($stmt->execute()) {
         $assignmentid = $stmt->insert_id;

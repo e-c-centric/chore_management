@@ -15,14 +15,9 @@ if (checkUserRole() == 3) {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
-    <meta name="og:type" content="website" />
-    <meta name="twitter:card" content="photo" />
-    <link rel="stylesheet" type="text/css" href="../css/login.css" />
-    <link rel="stylesheet" type="text/css" href="../css/styleguide.css" />
+
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
 
-    <link rel="stylesheet" type="text/css" href="../css/globals.css" />
-    <link rel="stylesheet" type="text/css" href="../css/chore-control-panel.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -49,7 +44,8 @@ if (checkUserRole() == 3) {
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <img width="48" height="48" src="https://img.icons8.com/dotty/48/user.png" alt="user" /> <?php echo $_SESSION['fullname']; ?>
+                    <img width="48" height="48" src="https://img.icons8.com/dotty/48/user.png" alt="user" /> <a href="../view/assigned_chores_view_user.php"><?php echo $_SESSION['fullname'];
+                                                                                                                                                                echo "\n"; ?>View Your Chores</a>
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -64,7 +60,11 @@ if (checkUserRole() == 3) {
         <div class="inner flex flex-column gap-8">
             <div class="flex flex-column gap-4">
                 <div class="flex items-center justify-between">
-                    <h1>Chore List</h1>
+                    <h3></h3>
+                    <p><?php echo $_SESSION['fullname']; ?></p>
+                </div>
+                <div class="flex items-center justify-between">
+                    <h1>Manage Chores</h1>
                     <button class="add-chore" onclick="document.getElementById('addChoreModal').classList.remove('hidden');" id="modal-btn">Add a chore</button>
                 </div>
                 <div class=" flex items-center justify-between gap-6">
